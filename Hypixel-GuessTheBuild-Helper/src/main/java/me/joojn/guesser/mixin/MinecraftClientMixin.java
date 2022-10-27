@@ -31,13 +31,7 @@ public class MinecraftClientMixin {
 
             if(objectives.size() > 0)
             {
-                ScoreboardObjective o = null;
-
-                for(ScoreboardObjective o_ : objectives)
-                {
-                    o = o_;
-                    break;
-                }
+                ScoreboardObjective o = objectives.iterator().next();
 
                 String title = o.getDisplayName().getString();
                 if(Objects.equals(lastTitle, title)) return;

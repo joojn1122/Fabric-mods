@@ -3,7 +3,8 @@ package me.joojn.guesser.guess;
 import me.joojn.guesser.GuesserMod;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 
 public class GuessTheBuild {
 
-    public static final String PREFIX = "§8[§6Guess The Builder Helper§8]: §f";
+    public static final String PREFIX = "§8[§6Guess The Build Helper§8]: §f";
 
     // regex
     private static final Pattern originalSizePattern = Pattern.compile("(?<=\\[).*(?=])");
@@ -116,7 +117,7 @@ public class GuessTheBuild {
 
             for(String s : words)
             {
-                if(themePattern.matcher(s).find() 
+                if(themePattern.matcher(s).find()
                         && s.length() == theme.length())
                 {
                     filteredWords.add(s);
@@ -134,13 +135,71 @@ public class GuessTheBuild {
         return showAllWords ? words : filteredWords.toArray(new String[0]);
     }
 
-    public static int updateWords(CommandContext<FabricClientCommandSource> context)
+    public static int updateWords(CommandContext<FabricClientCommandSource> ctx)
     {
-        context.getSource().sendFeedback(
-                Text.literal(PREFIX + "§aUpdating words..")
+        ctx.getSource().sendFeedback(
+                Text.literal(PREFIX + "Updating words..")
         );
 
         words = getWords();
+
+        if(words.length > 0)
+        {
+            ctx.getSource().sendFeedback(
+                    Text.literal(PREFIX
+                            + "§aSuccessfully updated words!"
+                    )
+            );
+        }
+        else
+        {
+            ctx.getSource().sendFeedback(
+                    Text.literal(PREFIX
+                            + "§cSomething went wrong while updating words.."
+                    )
+            );
+        }
+
+        return 1;
+    }
+
+    private static final Text[] infoTexts = new Text[] {
+            Text.empty(),
+            Text.literal(PREFIX.replace(":", "")),
+            Text.empty(),
+            Text.literal("§6/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\\"),
+            Text.literal("§6|                       |"),
+            Text.literal("§6|  §fVersion  §e1.0.0    §6|"),
+            Text.literal("§6|  §fAuthor  §ejoojn   §6|"),
+            Text.literal("§6|                       |"),
+            Text.literal("§6|        ").append(Text.literal("§a§nGitHub:§r").setStyle(
+                    Style.EMPTY.withClickEvent(new ClickEvent(
+                            ClickEvent.Action.OPEN_URL, "https://github.com/joojn1122/Fabric-mods/tree/main/Hypixel-GuessTheBuild-Helper"
+                    ))).append("       §6|")),
+            Text.literal("§6|                       |"),
+            Text.literal("§6\\______________/"),
+            Text.empty()
+    };
+
+    public static int printInfo(
+            CommandContext<FabricClientCommandSource> ctx
+    )
+    {
+        for(Text text : infoTexts)
+        {
+            ctx.getSource().sendFeedback(text);
+        }
+
+        return 1;
+    }
+
+    public static int printHelp(
+            CommandContext<FabricClientCommandSource> ctx
+    )
+    {
+        ctx.getSource().sendFeedback(
+                Text.literal("/guess <word> §8- §aIsn't this enough help?")
+        );
 
         return 1;
     }

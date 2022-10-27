@@ -7,7 +7,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
@@ -29,23 +28,24 @@ public class SuggestCommander implements SuggestionProvider<FabricClientCommandS
                                 ClientCommandManager.literal("update")
                                         .executes(GuessTheBuild::updateWords)
                         )
+                        .then(
+                              ClientCommandManager.literal("info")
+                                      .executes(GuessTheBuild::printInfo)
+                        )
+                        .then(
+                                ClientCommandManager.literal("help")
+                                        .executes(GuessTheBuild::printHelp)
+                        )
         );
 
-        LiteralCommandNode<FabricClientCommandSource> node = dispatcher.register(
+        dispatcher.register(
                 ClientCommandManager.literal(
-                        "s"
+                        "guess"
                 ).then(
                         ClientCommandManager.argument("word", StringArgumentType.string())
                                 .suggests(new SuggestCommander())
                                 .executes(SuggestCommander::execute)
                 )
-        );
-
-        // alias of s
-        dispatcher.register(
-                ClientCommandManager.literal(
-                        "s_"
-                ).redirect(node)
         );
     }
 
