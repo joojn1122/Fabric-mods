@@ -116,8 +116,8 @@ public class GuessTheBuild {
 
             for(String s : words)
             {
-                if(
-                   themePattern.matcher(s).find())
+                if(themePattern.matcher(s).find() 
+                        && s.length() == theme.length())
                 {
                     filteredWords.add(s);
                 }
