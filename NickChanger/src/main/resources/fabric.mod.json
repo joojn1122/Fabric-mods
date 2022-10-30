@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "nickchanger",
+  "version": "${version}",
+
+  "name": "Nick Changer",
+  "description": "Let's you change offline nick without leaving game!",
+  "authors": [
+    "joojn"
+  ],
+  "contact": {
+    "homepage": "https://github.com/joojn1122/Fabric-mods/tree/main/NickChanger",
+    "sources": "https://github.com/joojn1122/Fabric-mods/tree/main/NickChanger"
+  },
+
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.joojn.nickchanger.NickChanger"
+    ]
+  },
+  "mixins": [
+    "nickchanger.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

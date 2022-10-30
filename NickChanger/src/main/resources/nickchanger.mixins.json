@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.joojn.nickchanger.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "MultiplayerScreenMixin",
+    "SessionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
