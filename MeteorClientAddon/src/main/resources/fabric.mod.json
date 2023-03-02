@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "meteorutils",
+  "version": "${version}",
+  "name": "Meteor Utils",
+  "description": "Some utilities for Meteor",
+  "authors": [
+    "joojn"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.joojn.meteoraddon.MeteorClientUtils"
+    ]
+  },
+  "mixins": [
+    "MeteorAddon.mixins.json"
+  ],
+  "depends": {
+    "java": ">=16",
+    "meteor-client": "*",
+    "minecraft": ">=1.19.3"
+  }
+}

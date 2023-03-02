@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.joojn.meteoraddon.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "AbstractClientPlayerEntityMixin",
+    "ActionBarMixin",
+    "ClientInteractionManagerMixin",
+    "InGameHudMixin",
+    "PlayerListEntryMixin",
+    "WorldRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "GameProfileMixin",
+    "PlayerEntityMixin"
+  ]
+}
