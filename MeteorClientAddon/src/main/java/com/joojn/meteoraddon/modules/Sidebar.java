@@ -1,6 +1,7 @@
 package com.joojn.meteoraddon.modules;
 
 import com.joojn.meteoraddon.MeteorClientUtils;
+import meteordevelopment.meteorclient.gui.tabs.builtin.ModulesTab;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
@@ -19,10 +20,10 @@ public class Sidebar extends Module {
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final Setting<Boolean> showSidebar = sgGeneral.add(new BoolSetting.Builder()
-            .name("show-sidebar")
-            .description("Show sidebar")
-            .defaultValue(true)
+    private final Setting<Boolean> hideSidebar = sgGeneral.add(new BoolSetting.Builder()
+            .name("hide-sidebar")
+            .description("Hide sidebar")
+            .defaultValue(false)
             .build()
     );
 
@@ -34,7 +35,7 @@ public class Sidebar extends Module {
     );
 
     public boolean hideSidebar() {
-        return this.isActive() && !showSidebar.get();
+        return this.isActive() && hideSidebar.get();
     }
 
     public boolean hideRedNumbers() {

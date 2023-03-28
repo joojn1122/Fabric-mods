@@ -67,10 +67,14 @@ public class ClientInteractionManagerMixin implements IClientInteractionManager 
     }
 
     @Override
+    public void sendSequencedPacket(SequencedPacketCreator packetCreator) {
+        sendSequencedPacket(client.world, packetCreator);
+    }
+
+    @Override
     public void sendPlayerActionC2SPacket(PlayerActionC2SPacket.Action action, BlockPos blockPos, Direction direction)
     {
-        sendSequencedPacket(client.world,
-                i -> new PlayerActionC2SPacket(action, blockPos, direction, i));
+        sendSequencedPacket(i -> new PlayerActionC2SPacket(action, blockPos, direction, i));
     }
 
     @Inject(at = {

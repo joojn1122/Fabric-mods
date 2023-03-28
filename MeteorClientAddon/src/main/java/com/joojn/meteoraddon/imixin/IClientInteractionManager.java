@@ -1,6 +1,7 @@
 package com.joojn.meteoraddon.imixin;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.SequencedPacketCreator;
 import net.minecraft.network.packet.c2s.play.PlayerActionC2SPacket.Action;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,10 +20,13 @@ public interface IClientInteractionManager {
 
     void setBreakingBlock(boolean breakingBlock);
 
+    void sendSequencedPacket(SequencedPacketCreator packetCreator);
+
     void sendPlayerActionC2SPacket(Action action, BlockPos blockPos, Direction direction);
 
     static IClientInteractionManager get() {
         return (IClientInteractionManager) MinecraftClient.getInstance().interactionManager;
     };
+
 
 }

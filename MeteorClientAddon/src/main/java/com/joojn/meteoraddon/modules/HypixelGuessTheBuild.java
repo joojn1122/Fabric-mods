@@ -1,21 +1,14 @@
 package com.joojn.meteoraddon.modules;
 
 import com.joojn.meteoraddon.MeteorClientUtils;
-import com.joojn.meteoraddon.commands.GuessTheBuilderCommand;
-import com.joojn.meteoraddon.utils.PlayerUtil;
-import com.mojang.brigadier.context.CommandContext;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -45,10 +38,6 @@ public class HypixelGuessTheBuild extends Module {
                 "hypixel-guess-the-build",
                 "Automatically guesses the build in Hypixel's Guess The Build game, '/guesser help' for help"
         );
-
-        ClientCommandRegistrationCallback.EVENT.register(
-                GuessTheBuilderCommand::registerCommands
-        );
     }
 
     private final static Random RANDOM = new Random();
@@ -67,7 +56,7 @@ public class HypixelGuessTheBuild extends Module {
         MeteorClientUtils.LOGGER.info("Found words %s".formatted(Arrays.toString(words)));
     }
 
-    private static String[] getWords()
+    public static String[] getWords()
     {
         File file = new File("guesser-words.csv");
 
@@ -180,7 +169,7 @@ public class HypixelGuessTheBuild extends Module {
                 {
                     usedWords.add(num);
 
-                    PlayerUtil.sendChatMessage(
+                    ChatUtils.sendPlayerMsg(
                             filteredWords.get(num)
                     );
                 }
@@ -206,7 +195,7 @@ public class HypixelGuessTheBuild extends Module {
 
             showAllWords = false;
 
-            addChatMessage("§aSetting current search to '§e%s§a'".formatted(theme));
+            ChatUtils.sendPlayerMsg(PREFIX + "§aSetting current search to '§e%s§a'".formatted(theme));
 
             Pattern themePattern = Pattern.compile(
                     theme.replace("_", "[^ ]"),
@@ -231,79 +220,5 @@ public class HypixelGuessTheBuild extends Module {
     public static String[] getFilteredWords()
     {
         return showAllWords ? words : filteredWords.toArray(new String[0]);
-    }
-
-    public static int updateWords(CommandContext<FabricClientCommandSource> ctx)
-    {
-        ctx.getSource().sendFeedback(
-                Text.literal(PREFIX + "Updating words..")
-        );
-
-        words = getWords();
-
-        if(words.length > 0)
-        {
-            ctx.getSource().sendFeedback(
-                    Text.literal(PREFIX
-                            + "§aSuccessfully updated words!"
-                    )
-            );
-        }
-        else
-        {
-            ctx.getSource().sendFeedback(
-                    Text.literal(PREFIX
-                            + "§cSomething went wrong while updating words.."
-                    )
-            );
-        }
-
-        return 1;
-    }
-
-    private static final Text[] infoTexts = new Text[] {
-            Text.empty(),
-            Text.literal(PREFIX.replace(":", "")),
-            Text.empty(),
-            Text.literal("§6/‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\\"),
-            Text.literal("§6|                       |"),
-            Text.literal("§6|  §fVersion  §e1.0.0    §6|"),
-            Text.literal("§6|  §fAuthor  §ejoojn   §6|"),
-            Text.literal("§6|                       |"),
-            Text.literal("§6|        ").append(Text.literal("§a§nGitHub:§r").setStyle(
-                    Style.EMPTY.withClickEvent(new ClickEvent(
-                            ClickEvent.Action.OPEN_URL, "https://github.com/joojn1122/Fabric-mods/tree/main/Hypixel-GuessTheBuild-Helper"
-                    ))).append("       §6|")),
-            Text.literal("§6|                       |"),
-            Text.literal("§6\\______________/"),
-            Text.empty()
-    };
-
-    public static int printInfo(
-            CommandContext<FabricClientCommandSource> ctx
-    )
-    {
-        for(Text text : infoTexts)
-        {
-            ctx.getSource().sendFeedback(text);
-        }
-
-        return 1;
-    }
-
-    public static int printHelp(
-            CommandContext<FabricClientCommandSource> ctx
-    )
-    {
-        ctx.getSource().sendFeedback(
-                Text.literal("/guess <word> §8- §aIsn't this enough help?")
-        );
-
-        return 1;
-    }
-
-    public static void addChatMessage(String message)
-    {
-        PlayerUtil.addChatMessage(PREFIX + message);
     }
 }
